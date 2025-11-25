@@ -1,0 +1,598 @@
+/* assets/css/style.css
+   Complete stylesheet for MLOps dashboard
+   - Sidebar as flex column with scrollable nav
+   - Collapsed sidebar shows icons only (icon-only mode)
+   - Brand logo larger and centered when collapsed
+   - CTA anchored at bottom of sidebar
+   Comments in English
+*/
+
+/* ---------------------------
+   Theme variables
+   --------------------------- */
+:root {
+  --kaltire-orange: #F15A22;
+  --bg-dark: #0b0b0b;
+  --sidebar-start: #0f1416;   /* top of sidebar */
+  --sidebar-end:   #0c0e10;   /* bottom of sidebar */
+  --sidebar-gradient: linear-gradient(180deg, var(--sidebar-start), var(--sidebar-end));
+  --card: #101214;
+  --muted: #9aa0a6;
+  --glass: rgba(255,255,255,0.03);
+  --max-width: 1200px;
+  --highlight-color: #d95b18;  /* More prominent highlight for hover effects */
+}
+
+/* ---------------------------
+   Base / layout
+   --------------------------- */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(180deg, #0b0b0b 0%, #111218 100%);
+  color: #eaecef;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* page wrapper centers content */
+.page-wrapper {
+  max-width: var(--max-width);
+  margin: 18px auto;
+  padding: 0 18px;
+}
+
+/* grid layout */
+.app {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 80vh;
+  gap: 24px;
+  transition: grid-template-columns 0.3s ease; /* Smooth transition for resizing */
+}
+
+/* ---------------------------
+   Sidebar (flex column)
+   --------------------------- */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+  background: var(--sidebar-gradient);
+  height: auto;
+  overflow: visible;
+  position: relative;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+}
+
+/* Brand (logo + text) */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  min-height: 64px;
+}
+.brand-logo {
+  width: 48px; /* bigger logo */
+  height: auto;
+  border-radius: 8px;
+}
+.brand-info h1 {
+  font-size: 16px;
+  margin: 0;
+  color: var(--kaltire-orange);
+  letter-spacing: 0.2px;
+}
+
+/* muted / helper sizes */
+.muted { color: var(--muted); }
+.small { font-size: 13px; }
+.tiny { font-size: 12px; color: var(--muted); }
+
+
+/* user dropdown */ .user-dropdown { display: none; position: absolute; right: 0; top: 48px; background: #0f1112; border-radius: 8px; padding: 8px; min-width: 160px; box-shadow: 0 6px 18px rgba(0,0,0,0.6); z-index: 60; } .user-dropdown a { display: block; padding: 8px; color: #ddd; text-decoration: none; border-radius: 6px; } .user-dropdown a:hover { background: rgba(255,255,255,0.02); }
+
+/* ---------------------------
+   Nav wrapper + scrollable area
+   --------------------------- */
+.nav-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 12px;
+}
+
+.nav-scrollable {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-right: 6px;
+}
+
+/* Hide native scrollbar but keep scroll functionality */
+.nav-scrollable {
+  scrollbar-width: none;      /* Firefox */
+  -ms-overflow-style: none;   /* IE 10+ */
+}
+.nav-scrollable::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* Nav links: show icon + label, do not wrap label */
+.nav-scrollable a,
+.nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: #cbd5da;
+  text-decoration: none;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background 0.3s ease;
+}
+.nav a:hover,
+.nav-scrollable a:hover {
+  background: rgba(255,255,255,0.02);
+  color: #fff;
+  cursor: pointer;
+  border-left: 4px solid var(--kaltire-orange); /* Visual cue for active item */
+}
+
+/* nav icon / label structure */
+.nav-icon {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 20px;
+  margin-right: 12px;
+  opacity: 0.95;
+}
+.nav-label { display: inline-block; }
+
+/* Sidebar footer (CTA) fixed below the scrollable area */
+.sidebar-footer {
+  margin-top: 12px;
+  flex: 0 0 auto;
+}
+.sidebar-footer .cta {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  border-radius: 8px;
+  background: var(--kaltire-orange);
+  color: #111;
+  font-weight: 600;
+}
+
+/* ---------------------------
+   Main area
+   --------------------------- */
+.main {
+  padding: 18px;
+  border-radius: 12px;
+  background: transparent;
+  transition: background 0.3s ease;
+}
+
+/* topbar */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.top-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hamburger {
+  background: none;
+  border: 0;
+  color: #ddd;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+}
+.greeting { font-size: 18px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+
+/* top actions */
+.top-actions { display: flex; gap: 8px; align-items: center; }
+.search {
+  background: var(--glass);
+  border-radius: 10px;
+  padding: 8px 12px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  min-width: 220px;
+}
+.search input { background: transparent; border: none; color: #ddd; outline: none; font-size: 14px; width: 160px; }
+
+/* user menu */
+.user-menu { position: relative; display: flex; align-items: center; gap: 8px; }
+.user-btn {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  background: transparent;
+  color: #ddd;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+}
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: linear-gradient(180deg,#222,#111);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: var(--kaltire-orange);
+}
+.user-name { display: inline-block; margin-left: 6px; }
+
+/* ---------------------------
+   KPIs / Cards / Projects
+   --------------------------- */
+.kpis { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 18px; }
+
+.card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  overflow: hidden;
+  transition: background 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+
+.kpi-title { font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 8px; word-wrap: break-word; }
+
+.kpi-value { font-size: 20px; font-weight: 700; color: #fff; }
+
+.project-list {
+  display: flex;
+  flex-direction: column; /* Apilar los proyectos verticalmente */
+  gap: 16px; /* Espacio entre los cards */
+  margin-bottom: 18px;
+}
+
+.empty-state {
+  padding: 18px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.01);
+}
+
+.primary-btn {
+  display: inline-block;
+  padding: 10px 14px;
+  background: var(--kaltire-orange);
+  color: #111;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.project {
+  background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column; /* Asegura que el contenido dentro del card se apile verticalmente */
+  height: auto; /* Que el card se ajuste al contenido */
+}
+
+.project:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+
+.project .meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.p-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.badge {
+  font-size: 12px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  background: rgba(241,90,34,0.12); /* Revertir al color original */
+  color: var(--kaltire-orange);
+  font-weight: 600;
+}
+
+/* Owner y Updated at en la misma línea */
+.meta-info {
+  display: flex;
+  gap: 12px; /* Espacio entre el owner y la fecha */
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* Estado draft o active */
+.status {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--soft-orange); /* Fondo de color naranja suave */
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+
+/* Alineación de los botones en una sola línea */
+.actions {
+  display: flex;
+  gap: 8px; /* Ajusta el espacio entre los botones */
+  margin-top: 12px;
+  justify-content: flex-start; /* Los botones estarán alineados a la izquierda */
+}
+
+.btn {
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.02);
+  text-decoration: none;
+  color: #ddd;
+  display: inline-block;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.btn.primary {
+  background: var(--soft-orange);
+  color: var(--kaltire-orange);
+}
+
+.exp-row { margin-bottom:10px; }
+
+.exp-title { font-weight:600; }
+
+.exp-status { font-size:12px; color:var(--muted); }
+
+.progress-bar {
+  height:8px;
+  background: rgba(255,255,255,0.03);
+  border-radius:6px;
+  margin-top:6px;
+  overflow:hidden;
+}
+
+.progress-bar > div {
+  height:8px;
+  background: var(--kaltire-orange);
+}
+
+.app-footer {
+  text-align: center;
+  padding: 18px 0 40px;
+  color: #7f868b;
+  font-size: 13px;
+}
+
+/* ---------------------------
+   Collapsed sidebar (desktop) - ICON ONLY
+   --------------------------- */
+.app.collapsed {
+  grid-template-columns: 120px 1fr;
+}
+
+.app.collapsed .sidebar {
+  width: 120px;
+  padding: 12px;
+}
+
+/* center logo when collapsed and hide brand text */
+.app.collapsed .brand {
+  justify-content: center;
+}
+
+.app.collapsed .brand-info { display: none; }
+
+.app.collapsed .nav-scrollable a {
+  justify-content: center;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.app.collapsed .nav-scrollable a .nav-label { display: none; }
+
+.app.collapsed .nav-scrollable a .nav-icon {
+  margin-right: 0;
+  width: 28px;
+  height: 28px;
+}
+
+/* brighten icon on hover in collapsed mode */
+.app.collapsed .nav-scrollable a:hover .nav-icon svg { filter: brightness(1.1); }
+
+.app.collapsed .sidebar-footer .cta {
+  font-size: 14px;
+  padding: 8px 10px;
+}
+
+/* accessible focus ring */
+.nav-scrollable a:focus { outline: 2px solid rgba(241,90,34,0.12); outline-offset: 2px; border-radius: 8px; }
+
+/* ---------------------------
+   Responsive / mobile
+   --------------------------- */
+@media (max-width: 980px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar {
+    position: fixed;
+    left: -360px;
+    top: 16px;
+    bottom: 16px;
+    width: 320px;
+    z-index: 50;
+    transition: left .22s ease;
+  }
+
+  .sidebar.open { left: 16px; }
+
+  .app.dimmed::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 40;
+  }
+
+  .kpis { grid-template-columns: repeat(2,1fr); }
+  .projects { grid-template-columns: 1fr; }
+  .nav-scrollable { padding-right: 12px; }
+}
+
+@media (max-width: 480px) {
+  .kpis { grid-template-columns: 1fr; }
+  .search input { width: 80px; }
+}
+
+/* ---------------------------
+   Optional: show thin themed scrollbar on hover (uncomment if desired)
+   --------------------------- */
+/*
+.nav-scrollable:hover::-webkit-scrollbar { width: 8px; }
+.nav-scrollable:hover::-webkit-scrollbar-track { background: transparent; }
+.nav-scrollable:hover::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius:8px; }
+.nav-scrollable:hover { scrollbar-width: thin; }
+*/
+
+/* ---------- Modal styles (paste at the END of assets/css/style.css) ---------- */
+.modal {
+  display: none !important;              /* hidden by default */
+  position: fixed !important;
+  inset: 0 !important;                   /* top:0;right:0;bottom:0;left:0 */
+  z-index: 1200 !important;
+  align-items: center !important;
+  justify-content: center !important;
+  pointer-events: none !important;       /* blocked when closed */
+}
+
+.modal.open {
+  display: flex !important;
+  pointer-events: auto !important;
+}
+
+.modal-overlay {
+  position: absolute !important;
+  inset: 0 !important;
+  background: rgba(0,0,0,0.60) !important;
+  backdrop-filter: blur(2px);
+}
+
+.modal-dialog {
+  position: relative !important;
+  z-index: 1220 !important;
+  width: 100% !important;
+  max-width: 760px !important;
+  margin: 24px !important;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)) !important;
+  border-radius: 12px !important;
+  padding: 20px !important;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6) !important;
+  color: #eaecef !important;
+  transform: translateY(0) !important;
+  outline: none !important;
+}
+
+.modal-close {
+  position: absolute !important;
+  right: 10px !important;
+  top: 8px !important;
+  background: transparent !important;
+  border: 0 !important;
+  color: #ddd !important;
+  font-size: 22px !important;
+  cursor: pointer !important;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-form .label-text {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.modal-form input,
+.modal-form textarea,
+.modal-form select {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.02);
+  color: #ddd;
+  padding: 10px 12px;
+  border-radius: 8px;
+  width: 100%;
+  font-size: 14px;
+}
+
+.modal-form textarea { 
+  min-height: 88px; 
+  resize: vertical; 
+}
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+  justify-self: flex-end;
+}
+
+.modal-actions button {
+  padding: 10px 14px;
+  background: var(--kaltire-orange);
+  color: #111;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.modal-actions button:hover {
+  background-color: #d95b18;
+}
+
+/* responsive tweaks */
+@media (max-width: 720px) {
+  .modal-dialog { margin: 12px; padding: 14px; max-width: 94%; }
+  .form-row { flex-direction: column; }
+}
